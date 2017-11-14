@@ -43,6 +43,8 @@
   -- action.
   -->
 
+<div class="row">
+<div class="column">
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -88,19 +90,50 @@
     shown in each row (but the order is across then down; I would
     prefer down then across). 
     -->
+
+
 {% if g.calendars is defined  %}
   <div class="row">
   {% for cal in g.calendars if cal.selected %}
-          <div class="col-md-4">
-	   {{ cal.summary }}
-          </div>
-         {% if loop.index is divisibleby 3 %}
-          </div> <div class="row">
-         {% endif %}
+       <div class="form-input">
+      <label><input type="checkbox" class="checkbox" value="{{cal.id}}">
+	   {{ cal.summary }}</label>
+        </div>
+        </div> <div class="row">
   {% endfor %}
   </div>
 {% endif %}
     
+<button type="button", class="btn btn-default submit">Select</button>
+  </div>
+  <div class="column">
+    <p> </p>
+  </div>
+
+ <div class="column">
+
+<div id="busy_times"><p style="margin-top: 10px;"></p></div>
+ </div>
+</div>
+
+<script>
+$(".submit").on("click", function(event){
+    var cals = [];
+    $.each($('.checkbox:checkbox:checked'), function(index, value) {
+    cals.push(value.value);});
+    $.post("/busy", {list: cals}, function(data){
+    var events = data.result;
+    var times_string = "<p> </p> <p> </p> <p> </p> <p> </p> <p> </p> <p> </p>";
+    for(i = 0; i < events.length; i++){
+    times_string += "<p>" + events[i] + "</p>";
+    } //end of for loop
+    $('#busy_times').html(times_string);
+  });//end of post
+});//end of on click
+</script>
+
+
+
 
   </div>  <!-- container (for bootstrap) -->
   </body> </html>

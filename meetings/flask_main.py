@@ -1,4 +1,5 @@
 import flask
+import requests
 from flask import render_template
 from flask import request
 from flask import url_for
@@ -68,6 +69,28 @@ def choose():
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)
     return render_template('index.html')
+
+
+@app.route("/busy", methods=["POST"])
+def busy():
+    app.logger.debug("Starting to calculate busy times")
+    events = []
+    end = flask.session['end_date']
+    beg = flask.session['begin_date']
+    cals = request.form.getlist('list[]')
+    service = get_gcal_service(valid_credentials())
+    for cal in cals:
+        try:
+            results = service.events().list(calendarId=cal, timeMin=beg, timeMax=end, singleEvents=True, orderBy="startTime").execute()
+            real = results.get('items', [])
+            for elem in real:
+                events.append(elem['summary'])
+        except:
+            app.logger.debug("Something failed")
+    app.logger.debug("events = " + str(events))
+    return flask.jsonify(result=events)
+
+
 
 ####
 #

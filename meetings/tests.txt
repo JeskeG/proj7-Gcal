@@ -1,0 +1,20 @@
+For 322shared@gmail.com's Google Calendar:
+If Random Stuff selected
+for date range of 11/13-11/17
+assert busy_times = Vacation, All day event - super busy, Do things with people
+for date range 11/18-11/21
+assert busy_times= None
+
+If Random Stuff and 322 Lab Hours selected
+for date range of 11/14-11/16
+assert busy_times = Thing to do every four days, All day long, Vacation, All day Event - super busy, Do things with people
+for date range 11/17-11/22
+assert busy_times = Thing to do every four days, Thing to do every four days
+
+If Random Stuff and 322 Lab Hours and Three Twenty Two selected
+for date range 11/14-11/18
+assert busy_times = event 1, Class, Thing to do every four days, 322 Lab, Late night things, Class, Thing to do every three days, 322 Lab,
+Embarrassing medical appointment, Thing to do every four days, All day long, Vacation, All day Event - super busy, Do things with people
+for date range 11/18-11/23
+assert busy_times = Thing to do every four days, Thing to do every three days, Class, 322 Lab, Thing to do every three days,
+Thing to do every four days, Thing to do every four days, Thing to do every four days
